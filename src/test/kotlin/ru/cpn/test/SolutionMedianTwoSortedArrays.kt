@@ -3,6 +3,7 @@ package ru.cpn.test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import ru.cpn.test.utils.TestUtils.lineNumber
 import java.util.stream.Stream
 import kotlin.test.assertEquals
 
@@ -10,7 +11,8 @@ class SolutionMedianTwoSortedArrays {
 
     @ParameterizedTest
     @MethodSource("testData")
-    fun test(expected: Double, nums1: IntArray, nums2: IntArray) {
+    @Suppress("UNUSED_PARAMETER")
+    fun test(lineNumber: Int, expected: Double, nums1: IntArray, nums2: IntArray) {
         assertEquals(expected, findMedianSortedArrays(nums1, nums2))
     }
 
@@ -34,7 +36,7 @@ class SolutionMedianTwoSortedArrays {
 
         println("medianIndex1: $medianIndex1, medianIndex2: $medianIndex2")
 
-        do {
+        while (true) {
 
             val min1 = nums1.getOrNull(index1) ?: Int.MAX_VALUE
             val min2 = nums2.getOrNull(index2) ?: Int.MAX_VALUE
@@ -63,21 +65,22 @@ class SolutionMedianTwoSortedArrays {
 
             rIndex++
             rIndexLast--
-        } while (true)
 
+        }
 
         return (rLeft + rRight) / 2.0
     }
 
     companion object {
-        private fun testItem(expected: Double, nums1: IntArray, nums2: IntArray) = Arguments.of(expected, nums1, nums2)
+        private fun testItem(lineNumber: Int, expected: Double, nums1: IntArray, nums2: IntArray) =
+            Arguments.of(lineNumber, expected, nums1, nums2)
 
         @JvmStatic
         fun testData(): Stream<Arguments> = Stream.of(
-            testItem(1.5, intArrayOf(1), intArrayOf(2)),
-            testItem(2.0, intArrayOf(1, 3), intArrayOf(2)),
-            testItem(2.5, intArrayOf(1, 2), intArrayOf(3, 4)),
-            testItem(-1.0, intArrayOf(3), intArrayOf(-2,-1))
+            testItem(lineNumber, 1.5, intArrayOf(1), intArrayOf(2)),
+            testItem(lineNumber, 2.0, intArrayOf(1, 3), intArrayOf(2)),
+            testItem(lineNumber, 2.5, intArrayOf(1, 2), intArrayOf(3, 4)),
+            testItem(lineNumber, -1.0, intArrayOf(3), intArrayOf(-2, -1))
         )
     }
 }
